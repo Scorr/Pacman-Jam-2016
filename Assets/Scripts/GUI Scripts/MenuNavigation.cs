@@ -17,20 +17,9 @@ public class MenuNavigation : MonoBehaviour {
 	{
 		Application.LoadLevel("game");
 	}
-	
-	public void HighScores()
-	{
-		Application.LoadLevel("scores");
-		
-	}
-
-    public void Credits()
-    {
-        Application.LoadLevel("credits");
-    }
 
 	public void SourceCode()
 	{
-		Application.OpenURL("https://github.com/vilbeyli/Pacman-Clone/");
+		Application.OpenURL("https://github.com/Scorr/pacman-jam2016");
 	}
 }

@@ -212,6 +212,7 @@ public class GameGUINavigation : MonoBehaviour {
 	    
 	}
 
+    [ContextMenu("LoadNextLevel")]
     public void LoadLevel()
     {
         GameManager.Level++;

@@ -27,7 +27,6 @@ public class PlayerController : MonoBehaviour
 
     private bool _deadPlaying = false;
 
-    // Use this for initialization
     void Start()
     {
         GM = GameObject.Find("Game Manager").GetComponent<GameManager>();

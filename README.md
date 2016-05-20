@@ -1,2 +1,1 @@
-# pacman-jam2016
-My entry for the 72-hour GDL gamejam.
+http://gamedevleague.com/topic/96/intro-to-the-pacman-jam

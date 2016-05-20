@@ -66,9 +66,9 @@ public class PlayerController : MonoBehaviour
         if (GameManager.lives <= 0)
         {
             Debug.Log("Treshold for High Score: " + SM.LowestHigh());
-            if (GameManager.score >= SM.LowestHigh())
-                GUINav.getScoresMenu();
-            else
+            //if (GameManager.score >= SM.LowestHigh())
+            //    GUINav.getScoresMenu();
+            //else
                 GUINav.H_ShowGameOverScreen();
         }
 

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour {
 
-    private string TopScoresURL = "http://ilbeyli.byethost18.com/pacman/topscores.php";
+    private string TopScoresURL = "";
     private string username;
     private int _highscore;
     private int _lowestHigh;

@@ -46,7 +46,8 @@ public class TileManager : MonoBehaviour {
     void ReadTiles()
     {
         // hardwired data instead of reading from file (not feasible on web player)
-        string data = @"0000000000000000000000000000
+        string data = 
+@"0000000000000000000000000000
 0111111111111001111111111110
 0100001000001001000001000010
 0100001000001111000001000010

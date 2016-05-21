@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Random = UnityEngine.Random;
 
 
 public class AI : MonoBehaviour {
@@ -188,8 +190,9 @@ public class AI : MonoBehaviour {
 			Vector3 blinkyPos = GameObject.Find ("blinky").transform.position;
 			Vector3 ambushVector = target.position + 2*dir - blinkyPos ;
 			targetPos = new Vector3 (target.position.x+0.499f, target.position.y+0.499f) + 2*dir + ambushVector;
-			targetTile = tiles[manager.Index((int)targetPos.x, (int)targetPos.y)];
-			break;
+		        targetTile = null;
+		        targetTile = tiles[manager.Index((int) targetPos.x, (int) targetPos.y)];
+		        break;
 		case "clyde":
 			targetPos = new Vector3 (target.position.x+0.499f, target.position.y+0.499f);
 			targetTile = tiles[manager.Index((int)targetPos.x, (int)targetPos.y)];

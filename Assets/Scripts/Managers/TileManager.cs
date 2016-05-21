@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Pathfinding;
 
 public class TileManager : MonoBehaviour {
 
@@ -37,7 +39,7 @@ public class TileManager : MonoBehaviour {
     // Update is called once per frame
 	void Update () 
 	{
-		//DrawNeighbors();
+		DrawNeighbors();
 
 	}
 	
@@ -45,88 +47,46 @@ public class TileManager : MonoBehaviour {
 	// hardcoded tile data: 1 = free tile, 0 = wall
     void ReadTiles()
     {
-        // hardwired data instead of reading from file (not feasible on web player)
-        string data = 
-@"0000000000000000000000000000
-0111111111111001111111111110
-0100001000001001000001000010
-0100001000001111000001000010
-0100001000001001000001000010
-0111111111111001111111111110
-0100001001000000001001000010
-0100001001000000001001000010
-0111111001111001111001111110
-0001001000001001000001001000
-0001001000001001000001001000
-0111001111111111111111001110
-0100001001000000001001000010
-0100001001000000001001000010
-0111111001000000001001111110
-0100001001000000001001000010
-0100001001000000001001000010
-0111001001111111111001001110
-0001001001000000001001001000
-0001001001000000001001001000
-0111111111111111111111111110
-0100001000001001000001000010
-0100001000001001000001000010
-0111001111111001111111001110
-0001001001000000001001001000
-0001001001000000001001001000
-0111111001111001111001111110
-0100001000001001000001000010
-0100001000001001000001000010
-0111111111111111111111111110
-0000000000000000000000000000";
 
-        int X = 1, Y = 31;
-        using (StringReader reader = new StringReader(data))
-        {
-            string line;
-            while ((line = reader.ReadLine()) != null)
+        GridGraph gridGraph = AstarPath.active.astarData.gridGraph;
+        GridNode[] nodes = gridGraph.nodes;
+        //using (StringReader reader = new StringReader(data))
+        //{
+        //    string line;
+        //    while ((line = reader.ReadLine()) != null)
+        //    {
+        for (int y = 0; y < gridGraph.Depth; y++) {
+            for (int x = 0; x < gridGraph.width; ++x)
             {
-
-                X = 1; // for every line
-                for (int i = 0; i < line.Length; ++i)
-                {
-                    Tile newTile = new Tile(X, Y);
-
-                    // if the tile we read is a valid tile (movable)
-                    if (line[i] == '1')
-                    {
-                        // check for left-right neighbor
-                        if (i != 0 && line[i - 1] == '1')
-                        {
-                            // assign each tile to the corresponding side of other tile
-                            newTile.left = tiles[tiles.Count - 1];
-                            tiles[tiles.Count - 1].right = newTile;
-
-                            // adjust adjcent tile counts of each tile
-                            newTile.adjacentCount++;
-                            tiles[tiles.Count - 1].adjacentCount++;
-                        }
-                    }
-
-                    // if the current tile is not movable
-                    else newTile.occupied = true;
-
-                    // check for up-down neighbor, starting from second row (Y<30)
-                    int upNeighbor = tiles.Count - line.Length; // up neighbor index
-                    if (Y < 30 && !newTile.occupied && !tiles[upNeighbor].occupied)
-                    {
-                        tiles[upNeighbor].down = newTile;
-                        newTile.up = tiles[upNeighbor];
+                var newTile = new Tile(x + 1, y + 1);
+                GridNode node = nodes[y*gridGraph.width + x];
+                if (node.Walkable) {
+                    if (x != 0 && nodes[y*gridGraph.width + (x - 1)].Walkable) {
+                        // assign each tile to the corresponding side of other tile
+                        newTile.left = tiles[tiles.Count - 1];
+                        tiles[tiles.Count - 1].right = newTile;
 
                         // adjust adjcent tile counts of each tile
                         newTile.adjacentCount++;
-                        tiles[upNeighbor].adjacentCount++;
+                        tiles[tiles.Count - 1].adjacentCount++;
                     }
-
-                    tiles.Add(newTile);
-                    X++;
+                }
+                else {
+                    newTile.occupied = true;
                 }
 
-                Y--;
+                // check for up-down neighbor
+                int downNeighbour = tiles.Count - gridGraph.width; // up neighbor index
+                if (y > 0 && !newTile.occupied && !tiles[downNeighbour].occupied) {
+                    tiles[downNeighbour].up = newTile;
+                    newTile.down = tiles[downNeighbour];
+
+                    // adjust adjcent tile counts of each tile
+                    newTile.adjacentCount++;
+                    tiles[downNeighbour].adjacentCount++;
+                }
+
+                tiles.Add(newTile);
             }
         }
 
@@ -139,12 +99,17 @@ public class TileManager : MonoBehaviour {
 
     }
 
+    /*void OnDrawGizmos() {
+        foreach (Tile tile in tiles) {
+            if (tile.occupied) Gizmos.DrawSphere(new Vector3(tile.x, tile.y, 0), 0.25f);
+        }
+    }*/
+
 	//-----------------------------------------------------------------------
 	// Draw lines between neighbor tiles (debug)
 	void DrawNeighbors()
 	{
-		foreach(Tile tile in tiles)
-		{
+		foreach(Tile tile in tiles) {
 			Vector3 pos = new Vector3(tile.x, tile.y, 0);
 			Vector3 up = new Vector3(tile.x+0.1f, tile.y+1, 0);
 			Vector3 down = new Vector3(tile.x-0.1f, tile.y-1, 0);
@@ -162,8 +127,11 @@ public class TileManager : MonoBehaviour {
 
 	//----------------------------------------------------------------------
 	// returns the index in the tiles list of a given tile's coordinates
-	public int Index(int X, int Y)
-	{
+	public int Index(int X, int Y) {
+	    Tile retTile = tiles.Find(tile => tile.x == X && tile.y == Y);
+        if (retTile != null)
+            return tiles.IndexOf(retTile);
+	    return 0;
 		// if the requsted index is in bounds
 		//Debug.Log ("Index called for X: " + X + ", Y: " + Y);
 		if(X>=1 && X<=28 && Y<=31 && Y>=1)
@@ -181,6 +149,7 @@ public class TileManager : MonoBehaviour {
 	
 	public int Index(Tile tile)
 	{
+        return tiles.IndexOf(tile);
 		return (31-tile.y)*28 + tile.x-1;
 	}
 

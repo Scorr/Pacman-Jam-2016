@@ -7,6 +7,7 @@ public class Pacdot : MonoBehaviour {
 		if(other.name == "pacman")
 		{
             AudioManager.Instance.PlaySound("pickup");
+            GameObject.Find("ChargeBar").GetComponent<ChargeBar>().AddCharge();
 
 			GameManager.score += 10;
 		    GameObject[] pacdots = GameObject.FindGameObjectsWithTag("pacdot");

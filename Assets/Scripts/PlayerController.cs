@@ -1,10 +1,13 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
 
     public GameObject portal;
+    public static bool CanPortal;
+    private bool portaling;
 
     public float speed = 0.4f;
     Vector2 _dest = Vector2.zero;
@@ -105,11 +108,24 @@ public class PlayerController : MonoBehaviour {
         GetComponent<Animator>().SetFloat("DirY", 0);
     }
 
-    void ReadInputAndMove()
-    {
+    void ReadInputAndMove() {
+
+        if (portaling) return;
+
         // move closer to destination
         Vector2 p = Vector2.MoveTowards(transform.position, _dest, speed);
         GetComponent<Rigidbody2D>().MovePosition(p);
+
+        if (Input.GetButtonDown("Portal") && CanPortal) {
+            CanPortal = false;
+            portaling = true;
+            Instantiate(portal, p, Quaternion.identity);
+            LeanTween.scale(gameObject, Vector3.zero, 2.5f).setOnComplete(() => {
+                GameManager.Level++;
+                SceneManager.LoadScene("game");
+                portaling = false;
+            });
+        }
 
         // get the next direction from keyboard
         if (Input.GetAxis("Horizontal") > 0) _nextDir = Vector2.right;

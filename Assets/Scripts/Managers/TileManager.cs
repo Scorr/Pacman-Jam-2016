@@ -26,6 +26,7 @@ public class TileManager : MonoBehaviour {
 	
 	public List<Tile> tiles = new List<Tile>();
     public GameObject pacdot;
+    private List<GameObject> pacdots = new List<GameObject>();
 	
 	// Use this for initialization
 	void Start() 
@@ -102,9 +103,10 @@ public class TileManager : MonoBehaviour {
     }
 
     private void AddPacdots() {
+        if (pacdots.Count > 0) return; // Prevent bug that spawns pacdots more than once.
         foreach (Tile tile in tiles) {
             if (!tile.occupied)
-                Instantiate(pacdot, new Vector3(tile.x, tile.y), Quaternion.identity);
+                pacdots.Add((GameObject)Instantiate(pacdot, new Vector3(tile.x, tile.y), Quaternion.identity));
         }
     }
 

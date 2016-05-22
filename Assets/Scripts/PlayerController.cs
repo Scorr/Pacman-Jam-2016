@@ -45,13 +45,10 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Update() {
-        Vector2 p = Vector2.MoveTowards(transform.position, _dest, speed);
-        GetComponent<Rigidbody2D>().MovePosition(p);
-
         if (Input.GetButtonDown("Portal") && CanPortal) {
             CanPortal = false;
             portaling = true;
-            Instantiate(portal, p, Quaternion.identity);
+            Instantiate(portal, transform.position, Quaternion.identity);
             LeanTween.scale(gameObject, Vector3.zero, 0.5f).setOnComplete(() => {
                 GameManager.Level++;
                 SceneManager.LoadScene("game");

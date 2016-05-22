@@ -14,8 +14,7 @@ public class AudioManager : Singleton<AudioManager> {
                 getScwhifty.Play();
                 break;
             case "pickup":
-                if (!pickupSound.isPlaying)
-                    pickupSound.Play();
+                pickupSound.Play();
                 break;
             default:
                 Debug.LogError("sound " + name + " not found");

@@ -16,6 +16,7 @@ public class Energizer : MonoBehaviour {
     {
         if(col.name == "pacman")
         {
+            AudioManager.Instance.PlaySound("schwifty");
             gm.ScareGhosts();
             Destroy(gameObject);
         }

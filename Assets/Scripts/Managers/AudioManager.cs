@@ -2,14 +2,24 @@
 
 public class AudioManager : Singleton<AudioManager> {
 
-    private AudioSource _audioSource;
+    // this shit is bad and unmaintainable
+    // but it is a jam and i am bad
+    public AudioSource pickupSound;
+    public AudioSource getScwhifty;
 
-    private void Awake() {
-        _audioSource = GetComponent<AudioSource>();
-    }
-
-    public void PlaySound() {
-        if (!_audioSource.isPlaying)
-            _audioSource.Play();
+    public void PlaySound(string name) {
+        // ditto here
+        switch (name) {
+            case "schwifty":
+                getScwhifty.Play();
+                break;
+            case "pickup":
+                if (!pickupSound.isPlaying)
+                    pickupSound.Play();
+                break;
+            default:
+                Debug.LogError("sound " + name + " not found");
+                break;
+        }
     }
 }

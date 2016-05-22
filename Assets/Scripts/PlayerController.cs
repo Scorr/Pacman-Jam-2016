@@ -55,6 +55,13 @@ public class PlayerController : MonoBehaviour {
                 portaling = false;
             });
         }
+
+        if (portaling) return;
+        // get the next direction from keyboard
+        if (Input.GetAxisRaw("Horizontal") > 0) _nextDir = Vector2.right;
+        if (Input.GetAxisRaw("Horizontal") < 0) _nextDir = -Vector2.right;
+        if (Input.GetAxisRaw("Vertical") > 0) _nextDir = Vector2.up;
+        if (Input.GetAxisRaw("Vertical") < 0) _nextDir = -Vector2.up;
     }
 
     void FixedUpdate()
@@ -77,6 +84,8 @@ public class PlayerController : MonoBehaviour {
     }
 
     private IEnumerator PlayDeadAnimation() {
+        AudioManager.Instance.PlaySound("wubbalubbadubdub");
+
         LeanTween.scale(gameObject, new Vector3(0.2f, 0.2f), 1f);
         LeanTween.rotateZ(gameObject, 180f, 1f);
         _deadPlaying = true;
@@ -131,17 +140,9 @@ public class PlayerController : MonoBehaviour {
         Vector2 p = Vector2.MoveTowards(transform.position, _dest, speed);
         GetComponent<Rigidbody2D>().MovePosition(p);
 
-        // get the next direction from keyboard
-        if (Input.GetAxis("Horizontal") > 0) _nextDir = Vector2.right;
-        if (Input.GetAxis("Horizontal") < 0) _nextDir = -Vector2.right;
-        if (Input.GetAxis("Vertical") > 0) _nextDir = Vector2.up;
-        if (Input.GetAxis("Vertical") < 0) _nextDir = -Vector2.up;
-
         // if pacman is in the center of a tile
-        if (Vector2.Distance(_dest, transform.position) < 0.00001f)
-        {
-            if (Valid(_nextDir))
-            {
+        if (Vector2.Distance(_dest, transform.position) < 0.00001f) {
+            if (Valid(_nextDir)) {
                 _dest = (Vector2)transform.position + _nextDir;
                 _dir = _nextDir;
             }

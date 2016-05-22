@@ -7,6 +7,8 @@ public class AudioManager : Singleton<AudioManager> {
     public AudioSource pickupSound;
     public AudioSource getScwhifty;
     public AudioSource goodJob;
+    public AudioSource wubbalubbadubdub;
+    public AudioSource showMeWhatYouGot;
 
     public void PlaySound(string name) {
         // ditto here
@@ -19,6 +21,12 @@ public class AudioManager : Singleton<AudioManager> {
                 break;
             case "good_job":
                 goodJob.Play();
+                break;
+            case "wubbalubbadubdub":
+                wubbalubbadubdub.Play();
+                break;
+            case "show_me_what_you_got":
+                showMeWhatYouGot.Play();
                 break;
             default:
                 Debug.LogError("sound " + name + " not found");

@@ -14,8 +14,8 @@ public class Pacdot : MonoBehaviour {
 
             Destroy(gameObject);
 
-		    if (pacdots.Length == 1)
-		    {
+		    if (pacdots.Length == 1) {
+		        GameManager.score += 10000;
 		        GameObject.FindObjectOfType<GameGUINavigation>().LoadLevel();
 		    }
 		}

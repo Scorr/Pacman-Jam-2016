@@ -120,7 +120,7 @@ public class PlayerController : MonoBehaviour {
             CanPortal = false;
             portaling = true;
             Instantiate(portal, p, Quaternion.identity);
-            LeanTween.scale(gameObject, Vector3.zero, 2.5f).setOnComplete(() => {
+            LeanTween.scale(gameObject, Vector3.zero, 0.5f).setOnComplete(() => {
                 GameManager.Level++;
                 SceneManager.LoadScene("game");
                 portaling = false;

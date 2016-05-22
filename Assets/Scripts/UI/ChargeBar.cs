@@ -11,7 +11,7 @@ public class ChargeBar : MonoBehaviour {
     }
 
     public void AddCharge() {
-        image.fillAmount += 0.01f;
+        LeanTween.value(gameObject, (value) => image.fillAmount = value, image.fillAmount, image.fillAmount + 0.01f, 0.1f);
 
         if (image.fillAmount >= 1f) {
             image.color = Color.yellow;

@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour {
         blinky.GetComponent<GhostMove>().speed += Level * SpeedPerLevel;
         pinky.GetComponent<GhostMove>().speed += Level * SpeedPerLevel;
         inky.GetComponent<GhostMove>().speed += Level * SpeedPerLevel;
-        pacman.GetComponent<PlayerController>().speed += Level*SpeedPerLevel/2;
+        //pacman.GetComponent<PlayerController>().speed += Level*SpeedPerLevel/2;
     }
 
     private void ResetVariables()

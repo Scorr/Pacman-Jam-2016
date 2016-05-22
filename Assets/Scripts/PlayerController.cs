@@ -2,8 +2,9 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour
-{
+public class PlayerController : MonoBehaviour {
+
+    public GameObject portal;
 
     public float speed = 0.4f;
     Vector2 _dest = Vector2.zero;
@@ -32,7 +33,12 @@ public class PlayerController : MonoBehaviour
         GM = GameObject.Find("Game Manager").GetComponent<GameManager>();
         SM = GameObject.Find("Game Manager").GetComponent<ScoreManager>();
         GUINav = GameObject.Find("UI Manager").GetComponent<GameGUINavigation>();
-        _dest = transform.position;
+        var destination = new Vector3(transform.position.x + 2f, transform.position.y);
+        _dest = destination;
+
+        var portalGameObject = (GameObject)Instantiate(portal, transform.position, Quaternion.identity);
+        Destroy(portalGameObject, 1f);
+        LeanTween.moveX(gameObject, transform.position.x + 2f, 0.5f);
     }
 
     // Update is called once per frame

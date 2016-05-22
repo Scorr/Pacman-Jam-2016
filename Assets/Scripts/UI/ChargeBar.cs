@@ -11,7 +11,7 @@ public class ChargeBar : MonoBehaviour {
     }
 
     public void AddCharge() {
-        image.fillAmount += 0.02f;
+        image.fillAmount += 0.01f;
 
         if (image.fillAmount >= 1f) {
             image.color = Color.yellow;

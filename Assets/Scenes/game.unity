@@ -779,6 +779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcfa2a22fbee75946b6a627f98aa4deb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scorePopup: {fileID: 183878, guid: 419626d1b1bf51c40a5847f08dba507f, type: 2}
   high: 0
   score: 0
   lives:

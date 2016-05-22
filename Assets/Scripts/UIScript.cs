@@ -4,7 +4,8 @@ using UnityEngine.UI;
 
 public class UIScript : MonoBehaviour {
 
-	public int high, score;
+    public GameObject scorePopup;
+    public int high, score;
 
 	public List<Image> lives = new List<Image>(3);
 
@@ -22,16 +23,22 @@ public class UIScript : MonoBehaviour {
 	        Destroy(lives[lives.Count-1]);
             lives.RemoveAt(lives.Count-1);
 	    }
-	}
+
+        high = GameObject.Find("Game Manager").GetComponent<ScoreManager>().High();
+    }
 	
 	// Update is called once per frame
 	void Update () 
 	{
-
-        high = GameObject.Find("Game Manager").GetComponent<ScoreManager>().High();
-
         // update score text
-        score = GameManager.score;
+	    if (GameManager.score > score) {
+            score = GameManager.score;
+
+            Quaternion randomRot = Quaternion.Euler(new Vector3(0f, 0f, Random.Range(-30f, 30f)));
+	        var go = (GameObject)Instantiate(scorePopup, txt_score.transform.position, randomRot);
+            go.transform.SetParent(txt_score.transform);
+            go.GetComponent<ScorePopup>().SetText(score.ToString());
+	    }
 		txt_score.text = "Score\n" + score;
 		txt_high.text = "High Score\n" + high;
 	    txt_level.text = "Level\n" + (GameManager.Level + 1);

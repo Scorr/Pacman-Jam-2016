@@ -28,6 +28,7 @@ public class TileManager : MonoBehaviour {
 	};
 	
 	public List<Tile> tiles = new List<Tile>();
+    public GameObject pacdot;
 	
 	// Use this for initialization
 	void Start () 
@@ -50,6 +51,7 @@ public class TileManager : MonoBehaviour {
 
         GridGraph gridGraph = AstarPath.active.astarData.gridGraph;
         GridNode[] nodes = gridGraph.nodes;
+
         //using (StringReader reader = new StringReader(data))
         //{
         //    string line;
@@ -97,6 +99,14 @@ public class TileManager : MonoBehaviour {
                 tile.isIntersection = true;
         }
 
+        AddPacdots();
+    }
+
+    private void AddPacdots() {
+        foreach (Tile tile in tiles) {
+            if (!tile.occupied)
+                Instantiate(pacdot, new Vector3(tile.x, tile.y), Quaternion.identity);
+        }
     }
 
     /*void OnDrawGizmos() {

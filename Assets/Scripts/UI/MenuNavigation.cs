@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuNavigation : MonoBehaviour {
 
 	public void MainMenu()
 	{
-		Application.LoadLevel("menu");
+		SceneManager.LoadScene("menu");
 	}
 
 	public void Quit()
@@ -14,7 +15,7 @@ public class MenuNavigation : MonoBehaviour {
 	
 	public void Play()
 	{
-		Application.LoadLevel("game");
+        SceneManager.LoadScene("game");
 	}
 
 	public void SourceCode()

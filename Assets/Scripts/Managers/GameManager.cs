@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
@@ -76,7 +77,7 @@ public class GameManager : MonoBehaviour {
         Debug.Log("Level " + Level + " Loaded!");
         AssignGhosts();
         ResetVariables();
-
+        PlayerController.speedUp = false;
 
         // Adjust Ghost variables!
         clyde.GetComponent<GhostMove>().speed += Level * SpeedPerLevel;
@@ -138,6 +139,8 @@ public class GameManager : MonoBehaviour {
 		_timeToCalm = Time.time + scareLength;
 
         Debug.Log("Ghosts Scared");
+
+	    PlayerController.speedUp = true;
 	}
 
 	public void CalmGhosts()
@@ -148,7 +151,9 @@ public class GameManager : MonoBehaviour {
 		inky.GetComponent<GhostMove>().Calm();
 		clyde.GetComponent<GhostMove>().Calm();
 	    PlayerController.killstreak = 0;
-    }
+
+	    PlayerController.speedUp = false;
+	}
 
     void AssignGhosts()
     {

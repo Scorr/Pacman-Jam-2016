@@ -9,7 +9,10 @@ public class PlayerController : MonoBehaviour {
     public static bool CanPortal;
     private bool portaling;
 
-    public float speed = 0.4f;
+    // so bad
+    public static bool speedUp;
+
+    public float speed = 0.15f;
     Vector2 _dest = Vector2.zero;
     Vector2 _dir = Vector2.zero;
     Vector2 _nextDir = Vector2.zero;
@@ -137,7 +140,10 @@ public class PlayerController : MonoBehaviour {
         if (portaling) return;
 
         // move closer to destination
-        Vector2 p = Vector2.MoveTowards(transform.position, _dest, speed);
+        float realSpeed = speed;
+        if (speedUp)
+            realSpeed += 0.05f;
+        Vector2 p = Vector2.MoveTowards(transform.position, _dest, realSpeed);
         GetComponent<Rigidbody2D>().MovePosition(p);
 
         // if pacman is in the center of a tile

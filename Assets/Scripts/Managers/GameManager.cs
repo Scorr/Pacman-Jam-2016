@@ -180,6 +180,7 @@ public class GameManager : MonoBehaviour {
     
         // update UI too
         UIScript ui = GameObject.FindObjectOfType<UIScript>();
+        if (ui.lives.Count == 0) return;
         Destroy(ui.lives[ui.lives.Count - 1]);
         ui.lives.RemoveAt(ui.lives.Count - 1);
     }

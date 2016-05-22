@@ -1,8 +1,5 @@
-﻿using System;
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using System.IO;
 using Pathfinding;
 
 public class TileManager : MonoBehaviour {
@@ -31,21 +28,23 @@ public class TileManager : MonoBehaviour {
     public GameObject pacdot;
 	
 	// Use this for initialization
-	void Start () 
+	void Start() 
 	{
         ReadTiles();
-
 	}
 
     // Update is called once per frame
 	void Update () 
 	{
 		DrawNeighbors();
-
 	}
-	
-	//-----------------------------------------------------------------------
-	// hardcoded tile data: 1 = free tile, 0 = wall
+
+    void OnLevelWasLoaded() {
+        ReadTiles();
+    }
+
+    //-----------------------------------------------------------------------
+    // hardcoded tile data: 1 = free tile, 0 = wall
     void ReadTiles()
     {
 

@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour {
 	public float scareLength;
 	private float _timeToCalm;
 
-    public float SpeedPerLevel;
+    public float SpeedPerLevel = 0.025f;
     
     //-------------------------------------------------------------------
     // singleton implementation

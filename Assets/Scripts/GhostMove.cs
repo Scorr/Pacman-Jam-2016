@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 public class GhostMove : MonoBehaviour {
 
@@ -47,6 +48,7 @@ public class GhostMove : MonoBehaviour {
     private float _timeToToggleWhite;
     private float _toggleInterval;
     private bool isWhite = false;
+    private LTDescr currentTween;
 
 	// handles
 	public GameGUINavigation GUINav;
@@ -101,7 +103,8 @@ public class GhostMove : MonoBehaviour {
 
 	public void InitializeGhost()
 	{
-	    _startPos = getStartPosAccordingToName();
+        transform.localScale = new Vector3(1f, 1f);
+        _startPos = getStartPosAccordingToName();
 		waypoint = transform.position;	// to avoid flickering animation
 		state = State.Wait;
 	    timeToEndWait = Time.time + waitLength + GUINav.initialDelay;
@@ -110,6 +113,7 @@ public class GhostMove : MonoBehaviour {
 
     public void InitializeGhost(Vector3 pos)
     {
+        transform.localScale = new Vector3(1f, 1f);
         transform.position = pos;
         waypoint = transform.position;	// to avoid flickering animation
         state = State.Wait;
@@ -301,6 +305,7 @@ public class GhostMove : MonoBehaviour {
 		        Calm();
 		        InitializeGhost(_startPos);
                 pacman.UpdateScore();
+                AudioManager.Instance.PlaySound("good_job");
 		    }
 		       
 		    else
@@ -417,8 +422,8 @@ public class GhostMove : MonoBehaviour {
 		}
 	}
 
-	public void Frighten()
-	{
+	public void Frighten() {
+        currentTween = LeanTween.scale(gameObject, new Vector3(0.7f, 0.7f), 0.25f).setLoopPingPong(15).setOnComplete(() => transform.localScale = new Vector3(1f, 1f));
 		state = State.Run;
 		_direction *= -1;
 
@@ -430,6 +435,11 @@ public class GhostMove : MonoBehaviour {
 
 	public void Calm()
 	{
+	    if (currentTween != null) {
+	        LeanTween.cancel(currentTween.uniqueId);
+	        currentTween = null;
+	        transform.localScale = new Vector3(1f, 1f);
+	    }
         // if the ghost is not running, do nothing
 	    if (state != State.Run) return;
 

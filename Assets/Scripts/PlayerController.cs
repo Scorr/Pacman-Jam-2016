@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour {
             CanPortal = false;
             portaling = true;
             Instantiate(portal, transform.position, Quaternion.identity);
-            LeanTween.scale(gameObject, Vector3.zero, 0.5f).setOnComplete(() => {
+            LeanTween.scale(gameObject, new Vector3(0.2f, 0.2f), 0.4f).setOnComplete(() => {
                 GameManager.Level++;
                 SceneManager.LoadScene("game");
                 portaling = false;
@@ -67,21 +67,24 @@ public class PlayerController : MonoBehaviour {
                 break;
 
             case GameManager.GameState.Dead:
-                if (!_deadPlaying)
-                    StartCoroutine("PlayDeadAnimation");
+                if (!_deadPlaying) {
+                    StartCoroutine(PlayDeadAnimation());
+                }
                 break;
         }
 
 
     }
 
-    IEnumerator PlayDeadAnimation()
-    {
+    private IEnumerator PlayDeadAnimation() {
+        LeanTween.scale(gameObject, new Vector3(0.2f, 0.2f), 1f);
+        LeanTween.rotateZ(gameObject, 180f, 1f);
         _deadPlaying = true;
-        GetComponent<Animator>().SetBool("Die", true);
-        yield return new WaitForSeconds(1);
-        GetComponent<Animator>().SetBool("Die", false);
+
+        yield return new WaitForSeconds(1f);
         _deadPlaying = false;
+        transform.localScale = new Vector3(1f, 1f);
+        transform.rotation = Quaternion.identity;
 
         if (GameManager.lives <= 0)
         {

@@ -44,7 +44,22 @@ public class PlayerController : MonoBehaviour {
         LeanTween.moveX(gameObject, transform.position.x + 2f, 0.5f);
     }
 
-    // Update is called once per frame
+    private void Update() {
+        Vector2 p = Vector2.MoveTowards(transform.position, _dest, speed);
+        GetComponent<Rigidbody2D>().MovePosition(p);
+
+        if (Input.GetButtonDown("Portal") && CanPortal) {
+            CanPortal = false;
+            portaling = true;
+            Instantiate(portal, p, Quaternion.identity);
+            LeanTween.scale(gameObject, Vector3.zero, 0.5f).setOnComplete(() => {
+                GameManager.Level++;
+                SceneManager.LoadScene("game");
+                portaling = false;
+            });
+        }
+    }
+
     void FixedUpdate()
     {
         switch (GameManager.gameState)
@@ -115,17 +130,6 @@ public class PlayerController : MonoBehaviour {
         // move closer to destination
         Vector2 p = Vector2.MoveTowards(transform.position, _dest, speed);
         GetComponent<Rigidbody2D>().MovePosition(p);
-
-        if (Input.GetButtonDown("Portal") && CanPortal) {
-            CanPortal = false;
-            portaling = true;
-            Instantiate(portal, p, Quaternion.identity);
-            LeanTween.scale(gameObject, Vector3.zero, 0.5f).setOnComplete(() => {
-                GameManager.Level++;
-                SceneManager.LoadScene("game");
-                portaling = false;
-            });
-        }
 
         // get the next direction from keyboard
         if (Input.GetAxis("Horizontal") > 0) _nextDir = Vector2.right;
